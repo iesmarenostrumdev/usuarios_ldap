@@ -1,3 +1,6 @@
+# Fichero de configuración
+usuarios.config
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

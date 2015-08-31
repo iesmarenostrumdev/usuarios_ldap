@@ -1,0 +1,7 @@
+[config]
+host: localhost
+port: 9779
+className: Golem
+user: USUARIO_ADMIN_LDAP
+password: PASSWORD_ADMIN_LDAP
+url: URL_LISTA_USUARIOS_MODIFICADOS
