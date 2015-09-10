@@ -8,6 +8,8 @@ import logging
 import urllib2
 import traceback
 import ConfigParser
+from Crypto.Cipher import AES
+import base64
 
 
 # Logs
@@ -30,6 +32,7 @@ className = config.get('config', 'className')
 user = config.get('config', 'user')
 password = config.get('config', 'password')
 url = config.get('config', 'url')
+clave = config.get('config', 'clave')
 
 
 def busca(uid):
@@ -130,12 +133,21 @@ def add_user(data,group):
 
   return ret
 
+def decodepass(encoded):
+  # TODO
+  decoded = 'abc'
+  return decoded
 
 def main():
   usuarios = process_xml(url)
   for a in usuarios:
     uid = a['data']['uid']
     group = a['group']
+    
+    # Modificamos campo userPassword
+    a['data']['userPassword'] = decodepass(a['data']['userPasswordAlt'])
+    del a['data']['userPasswordAlt']
+    
     if busca(uid):
       # Si el usuario existe, se cambia su password
 
