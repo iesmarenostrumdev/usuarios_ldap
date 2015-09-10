@@ -10,6 +10,7 @@ import traceback
 import ConfigParser
 from Crypto.Cipher import AES
 import base64
+import rijndael
 
 
 # Logs
@@ -134,9 +135,22 @@ def add_user(data,group):
   return ret
 
 def decodepass(encoded):
-  # TODO
-  decoded = 'abc'
-  return decoded
+  key = clave
+  KEY_SIZE = 16
+  BLOCK_SIZE = 32
+  padded_key = key.ljust(KEY_SIZE, '\0')
+
+  ciphertext = base64.b64decode(encoded)
+
+  r = rijndael.rijndael(padded_key, BLOCK_SIZE)
+
+  padded_text = ''
+  for start in range(0, len(ciphertext), BLOCK_SIZE):
+    padded_text += r.decrypt(ciphertext[start:start+BLOCK_SIZE])
+
+  plaintext = padded_text.split('\x00', 1)[0]
+
+  return plaintext
 
 def main():
   usuarios = process_xml(url)
