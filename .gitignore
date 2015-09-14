@@ -3,6 +3,7 @@
 
 # Fichero de configuración
 usuarios.config
+last_check
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

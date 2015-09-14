@@ -11,6 +11,7 @@ import ConfigParser
 from Crypto.Cipher import AES
 import base64
 import rijndael
+import math
 
 
 # Logs
@@ -35,6 +36,8 @@ password = config.get('config', 'password')
 url = config.get('config', 'url')
 clave = config.get('config', 'clave')
 
+# Nombre de archivo que almacena fecha y hora del último chequeo
+check_file = "last_check"
 
 def busca(uid):
   """ Comprueba si existe el uid del usuario """
@@ -152,8 +155,33 @@ def decodepass(encoded):
 
   return plaintext
 
+def save_timestamp(f, timestamp):
+  with open(f, 'w') as f: f.write(timestamp.strftime("%Y-%m-%d %H:%M:%S\n"))
+
 def main():
-  usuarios = process_xml(url)
+
+  # Leemos última fecha y hora de chequeo
+  with open(check_file, 'a+') as f: last_check = f.read()
+
+  # Si no existe la fecha, por defecto se toma la fecha y hora actual
+  if last_check == '':
+    last_check = datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S\n")
+
+  # Calculamos los segundos desde el último chequeo hasta la hora actual
+  a = datetime.datetime.strptime(last_check, "%Y-%m-%d %H:%M:%S\n")
+  b = datetime.datetime.today()
+
+  # Sumamos 30 segundos por seguridad
+  secs = int(math.ceil((b-a).total_seconds()) + 30)
+
+  url_full = url + str(secs)
+
+  usuarios = process_xml(url_full)
+
+  # Actualizamos fecha y hora de la última actualización
+  # Sólo si no hay errores al obtener el XML y procesarlo
+  save_timestamp(check_file, b)
+  
   for a in usuarios:
     uid = a['data']['uid']
     group = a['group']
