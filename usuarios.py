@@ -12,10 +12,22 @@ from Crypto.Cipher import AES
 import base64
 import rijndael
 import math
+import os
 
+# Para correcta localización de los archivos de log, last_check, etc.
+dir = os.path.dirname(os.path.abspath(__file__))
+
+#Archivo para log
+log_file = os.path.join(dir, 'usuarios.log')
+
+# Nombre de archivo que almacena fecha y hora del último chequeo
+check_file = os.path.join(dir, 'last_check')
+
+# Archivo de configuración
+config_file = os.path.join(dir, 'usuarios.config')
 
 # Logs
-logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', filename='usuarios.log',level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', filename=log_file,level=logging.DEBUG)
 
 def excep(type, value, tb):
   logging.error("Excepción: {0} {1}.".format(str(value), traceback.format_tb(tb)))
@@ -25,7 +37,7 @@ sys.excepthook = excep
 
 # Datos de configuración
 config = ConfigParser.RawConfigParser()
-config.read('usuarios.config')
+config.read(config_file)
 
 host=config.get('config', 'host')
 port = config.get('config', 'port')
@@ -36,8 +48,6 @@ password = config.get('config', 'password')
 url = config.get('config', 'url')
 clave = config.get('config', 'clave')
 
-# Nombre de archivo que almacena fecha y hora del último chequeo
-check_file = "last_check"
 
 def busca(uid):
   """ Comprueba si existe el uid del usuario """
