@@ -13,6 +13,7 @@ import base64
 import rijndael
 import math
 import os
+import time
 
 # Para correcta localización de los archivos de log, last_check, etc.
 dir = os.path.dirname(os.path.abspath(__file__))
@@ -222,6 +223,7 @@ def main():
       else:
         logging.error(u"Error al crear el usuario {0}. Stack: {1}.".format(uid, str(res)))
 
+    time.sleep(1)
         
 if __name__ == "__main__":
   main()
