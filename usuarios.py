@@ -210,7 +210,7 @@ def main():
       if res == 'true':
         logging.info(u"Se cambia la contraseña para el usuario " + uid + ".\n")
       else:
-        logging.error(u"Error al cambiar la contraseña del usuario " + uid + ". Stack: " + res + ".\n")
+        logging.error(u"Error al cambiar la contraseña del usuario {0}. Stack: {1}.".format(uid, str(res)))
           
     else:
       # Si el usuario no existe, se crea
