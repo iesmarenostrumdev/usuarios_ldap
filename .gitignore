@@ -4,6 +4,7 @@
 # Fichero de configuración
 usuarios.config
 last_check
+borrar.xml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
