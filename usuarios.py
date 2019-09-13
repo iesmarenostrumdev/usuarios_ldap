@@ -14,12 +14,16 @@ import rijndael
 import math
 import os
 import time
+from pathlib import Path
 
 # Para correcta localización de los archivos de log, last_check, etc.
 dir = os.path.dirname(os.path.abspath(__file__))
 
 #Archivo para log
 log_file = os.path.join(dir, 'usuarios.log')
+
+# Archivo de lock
+lock_file = os.path.join(dir, 'running')
 
 # Nombre de archivo que almacena fecha y hora del último chequeo
 check_file = os.path.join(dir, 'last_check')
@@ -171,6 +175,15 @@ def save_timestamp(f, timestamp):
 
 def main():
 
+  # Comprobamos si el programa está en marcha ya
+  if Path(lock_file).is_file():
+    print("Programa ya en ejecución")
+    return
+
+  # Creamos archivo de lock
+  with open(lock_file, 'w') as f: f.write('running')
+
+
   # Leemos última fecha y hora de chequeo
   with open(check_file, 'a+') as f: last_check = f.read()
 
@@ -224,6 +237,9 @@ def main():
         logging.error(u"Error al crear el usuario {0}. Stack: {1}.".format(uid, str(res)))
 
     time.sleep(1)
+
+  # Eliminamos archivo de lock
+  os.remove(lock_file)
         
 if __name__ == "__main__":
   main()
