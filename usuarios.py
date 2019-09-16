@@ -36,6 +36,8 @@ logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', filename=log
 
 def excep(type, value, tb):
   logging.error("Excepción: {0} {1}.".format(str(value), traceback.format_tb(tb)))
+  # Eliminamos archivo de lock
+  os.remove(lock_file)
 
 sys.excepthook = excep
 
