@@ -205,10 +205,6 @@ def main():
 
   usuarios = process_xml(url_full)
 
-  # Actualizamos fecha y hora de la última actualización
-  # Sólo si no hay errores al obtener el XML y procesarlo
-  save_timestamp(check_file, b)
-  
   for a in usuarios:
     uid = a['data']['uid']
     group = a['group']
@@ -240,6 +236,10 @@ def main():
         logging.error(u"Error al crear el usuario {0}. Stack: {1}.".format(uid, str(res)))
 
     time.sleep(1)
+
+  # Actualizamos fecha y hora de la última actualización
+  # Sólo si no hay errores al obtener el XML y procesarlo
+  save_timestamp(check_file, b)
 
   # Eliminamos archivo de lock
   os.remove(lock_file)
