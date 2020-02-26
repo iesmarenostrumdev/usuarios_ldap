@@ -22,8 +22,9 @@ dir = os.path.dirname(os.path.abspath(__file__))
 #Archivo para log
 log_file = os.path.join(dir, 'usuarios.log')
 
-# Archivo de lock
-lock_file = os.path.join(dir, 'running')
+# Archivo de lock. En directorio /tmp para que se borre en arranque de sistema en caso de que haya un cuelgue
+# lock_file = os.path.join(dir, 'running')
+lock_file = '/tmp/usuarios_running'
 
 # Nombre de archivo que almacena fecha y hora del último chequeo
 check_file = os.path.join(dir, 'last_check')
